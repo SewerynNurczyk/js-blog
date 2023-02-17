@@ -29,10 +29,4 @@
         ],
         "no-prototype-builtins": ["off"]
     }
-    {
-        "extends": ["prettier"],
-        "plugins": ["prettier"],
-        "rules": {
-          "prettier/prettier": ["error"]
-        },
 }
