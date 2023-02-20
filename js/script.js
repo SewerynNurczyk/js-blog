@@ -46,7 +46,10 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags.list';
+  optTagsListSelector = '.tags.list',
+  optCloudClassCount = '5',
+  optCloudClassPrefix = 'tag-size-',
+  optAuthorsListSelector = '.list.authors';
 
 function generateTitleLinks(customSelector = '') {
 
@@ -83,6 +86,34 @@ function generateTitleLinks(customSelector = '') {
 }
 generateTitleLinks();
 
+function calculateTagsParams (tags){
+  const params = {
+    max : 0,
+    min : 999999
+  };
+  for(let tag in tags){
+    if(tags[tag] > params.max){
+      params.max = tags[tag];
+    }
+    if(tags[tag] < params.min){
+      params.min = tags[tag];
+    }
+    console.log(tag + ' is used ' + tags[tag] + ' times');
+  }
+  return params ;
+}
+
+calculateTagsParams();
+
+function calculateTagClass (count,params){
+  const normalizedCount = count - params.min;
+  const normalizedMax = params.max - params.min;
+  const percentage = normalizedCount / normalizedMax;
+  const classNumber = Math.floor( percentage * (optCloudClassCount - 1) + 1 );
+  return classNumber;
+
+}
+
 function generateTags(){
   /* [NEW] create a new variable allTags with an empty array */
   let allTags = {};
@@ -117,11 +148,11 @@ function generateTags(){
       /* [NEW] check if this link is NOT already in allTags */
       if(!allTags[tag]) {
 
-      /* [NEW] add tag to allTags object */
-      allTags[tag] = 1;
-    } else {
-      allTags[tag]++;
-    }
+        /* [NEW] add tag to allTags object */
+        allTags[tag] = 1;
+      } else {
+        allTags[tag]++;
+      }
 
     /* END LOOP: for each tag */
     }
@@ -133,17 +164,22 @@ function generateTags(){
   const tagList = document.querySelector(optTagsListSelector);
 
   /* [NEW] create variable for all links HTML code */
-let allTagsHTML = '';
+  const tagsParams = calculateTagsParams(allTags);
+  console.log('tagsParams:', tagsParams);
 
-/* [NEW] START LOOP: for each tag in allTags: */
-for(let tag in allTags){
+  let allTagsHTML = '';
+
+  /* [NEW] START LOOP: for each tag in allTags: */
+  for(let tag in allTags){
   /* [NEW] generate code of a link and add it to allTagsHTML */
-  allTagsHTML += '<li><a href="#tag-' + tag + '">' + tag + ' (' + allTags[tag] + ') ' + '</a></li>';
-}
-/* [NEW] END LOOP: for each tag in allTags: */
+    //allTagsHTML += '<li><a href="#tag-' + tag + '">' + tag + ' (' + allTags[tag] + ') ' + '</a></li>';//
+    const tagLinkHTML = '<li><a class="'+ optCloudClassPrefix + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag+ '">' + tag + '</a> ('+ allTags[tag]+ ')</li>';
+    allTagsHTML += tagLinkHTML;
+  }
+  /* [NEW] END LOOP: for each tag in allTags: */
 
-/*[NEW] add HTML from allTagsHTML to tagList */
-tagList.innerHTML = allTagsHTML;
+  /*[NEW] add HTML from allTagsHTML to tagList */
+  tagList.innerHTML = allTagsHTML;
 }
 
 generateTags();
@@ -205,6 +241,9 @@ function addClickListenersToTags(){
 addClickListenersToTags();
 
 function generateAuthors(){
+  /* [NEW] create a new variable allTags with an empty array */
+  let allAuthors = {};
+
   /* find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
 
@@ -225,12 +264,39 @@ function generateAuthors(){
 
     /* add generated code to html variable */
     html = html + linkHTML;
+
+    /* [NEW] check if this link is NOT already in allTags */
+    if(!allAuthors[author]) {
+
+      /* [NEW] add tag to allTags object */
+      allAuthors[author] = 1;
+    } else {
+      allAuthors[author]++;
+    }
     
     /* insert HTML of all the links into the tags wrapper */
     wrapper.innerHTML = html;
 
   /* END LOOP: for every article: */
   }
+  /* [NEW] find list of tags in right column */
+  const authorsList = document.querySelector(optAuthorsListSelector);
+
+  /* [NEW] create variable for all links HTML code */
+  const authorsParams = calculateTagsParams(allAuthors);
+  let allAuthorsHTML = '';
+ 
+  /* [NEW] START LOOP: for each tag in allTags: */
+  for(let author in allAuthors){
+    /* [NEW] generate code of a link and add it to allTagsHTML */
+    //allTagsHTML += '<li><a href="#tag-' + tag + '">' + tag + ' (' + allTags[tag] + ') ' + '</a></li>';//
+    allAuthorsHTML += '<a href="#tag-' + author + '" class="' + optCloudClassPrefix + calculateTagClass(allAuthors[author], authorsParams) + '">' + author + ' (' + allAuthors[author] + ') ' + '</a>';
+     
+  }
+  /* [NEW] END LOOP: for each tag in allTags: */
+ 
+  /*[NEW] add HTML from allTagsHTML to tagList */
+  authorsList.innerHTML = allAuthorsHTML;
 }
 
 generateAuthors();
