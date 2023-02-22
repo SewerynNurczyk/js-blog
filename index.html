@@ -193,7 +193,8 @@
                             </ul>
                         </div>
                     </article>
-                    <article class="post" id="article-10" data-tags="code deisgn news reviews" data-author="George Tuxedo">
+                    <article class="post" id="article-10" data-tags="code deisgn news reviews"
+                        data-author="George Tuxedo">
                         <h3 class="post-title">Article 10</h3>
                         <p class="post-author"></p>
                         <div class="post-content">
@@ -248,21 +249,21 @@
             </main>
         </div>
     </div>
-      <script id="template-article-link" type="text/x-handlebars-template">
+    <script id="template-article-link" type="text/x-handlebars-template">
         <li><a href="#{{ id }}"><span>{{ title }}</span></a></li>
       </script>
-      <script id="template-article-tag" type="text/x-handlebars-template"> 
+    <script id="template-article-tag" type="text/x-handlebars-template">
         <li><a href="#tag-{{ id }}"><span> {{ title }}</span></a></li> 
-      </script> 
-      <script id="template-article-author" type="text/x-handlebars-template"> 
+      </script>
+    <script id="template-article-author" type="text/x-handlebars-template">
         <p class="post-author"><a href="#author- {{id}}"><span>by{{title}} </span></a></p>
       </script>
-      <script id="template-tag-cloud-link" type="text/x-handlebars-template">
+    <script id="template-tag-cloud-link" type="text/x-handlebars-template">
         {{#each tags}}
         <li><a href="#tag-{{tag}}" class="{{className}}">{{tag}}({{count}})</a></li>
         {{/each}}
       </script>
-      <script id="template-authors-cloud-link" type="text/x-handlebars-template">
+    <script id="template-authors-cloud-link" type="text/x-handlebars-template">
         {{#each authors}}
           <li><a href='#author-{{author}}'>by {{author}}({{count}})</a></li>
         {{/each}}
