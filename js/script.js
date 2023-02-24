@@ -49,7 +49,7 @@ const optArticleSelector = '.post',
   optAuthorSelector = '.post-author',
   optTagsListSelector = '.tags.list',
   optCloudClassCount = '5',
-  optCloudClassPrefix = 'tag-size-',
+  //optCloudClassPrefix = 'tag-size-',
   optAuthorsListSelector = '.list.authors';
 
 function generateTitleLinks(customSelector = '') {
@@ -172,11 +172,13 @@ function generateTags() {
       
     //allTagsHTML += tagLinkHTML;
         
-      allTagsData.tags.push({
-        tag: tag,
-        count: allTags[tag],
-        className: calculateTagClass(allTags[tag], tagsParams)
-      });
+    allTagsData.tags.push({
+      tag: tag,
+      count: allTags[tag],
+      className: 'tag-size-' + calculateTagClass(allTags[tag], tagsParams)
+      
+    });
+    console.log('dupadupa', allTagsData)
   }
   /* [NEW] END LOOP: for each tag in allTags: */
 
@@ -295,8 +297,8 @@ function generateAuthors() {
   for (let author in allAuthors) {
     /* [NEW] generate code of a link and add it to allTagsHTML */
     //allAuthorsHTML += `<a href="#author-${author}" class="${optCloudClassPrefix + calculateTagClass(allAuthors[author], authorsParams)
-     // }">${author} (${allAuthors[author]})</a>`;
-     allAuthorsHtml.authors.push({
+    // }">${author} (${allAuthors[author]})</a>`;
+    allAuthorsHtml.authors.push({
       author: author,
       count: allAuthors[author],
     });
